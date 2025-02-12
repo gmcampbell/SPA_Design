@@ -7,6 +7,7 @@ from flax import linen as nn
 from typing import (Any, Callable, Iterable, List, Optional, Sequence, Tuple,
                     Union)
 
+identity = lambda x : x
 
 ###################################
 ########## Architectures ##########
@@ -181,15 +182,17 @@ class MonotonicActuator(nn.Module):
         constant_term = coefs[...,:1] # (batch_size, 1)
         poly_coefs = nn.leaky_relu(coefs[...,1:-1]) # (batch_size, polynomial_degree)
         # extract coeficient for log scaling
-        log_coef = nn.softplus(coefs[...,-1:]) # (batch_size, 1)
+        log_coef = 0.001*nn.softplus(coefs[...,-1:]) # (batch_size, 1)
 
         # use coeficients to compute force as: F = (1/a)*log(a*ReLu(poly(p)) + 1)
         # where a = log_coef, and poly is the polynomial computed by the network
-        basis = (y**(1+jnp.arange(self.polynomial_degree))) # (batch_size, polynomial_degree)
+        basis = ((y/1_000)**(1+jnp.arange(self.polynomial_degree))) # (batch_size, polynomial_degree)
+        #basis = (y**(1+jnp.arange(self.polynomial_degree))) # (batch_size, polynomial_degree)
         fs = jnp.sum(poly_coefs * basis, axis=-1, keepdims=True) # (batch_size, 1)
         fs = fs + constant_term # (batch_size, 1)
         fs = nn.relu(fs) # ensure forces are non-negative
-        fs = jnp.log(log_coef*fs + 1)/log_coef
+        #fs = 2*jnp.log(log_coef*fs + 1)/log_coef
+        #fs = 2*jnp.log1p(log_coef*fs)/log_coef
         return self.output_activation(fs) # (batch_size, 1)
     
 

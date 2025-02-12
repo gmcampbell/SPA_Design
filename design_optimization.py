@@ -27,9 +27,9 @@ _contactmax = 38.1  # maximum contact disk radius
 _hmin = 0 # minimum height
 _hmax = 70 # maximum height (in mm I think)
 _pmin = 0 # minimum pressure
-_pmax = 1.5 # maximum pressure (in PSI I think?) # TODO: check units
+_pmax = 10_000 # maximum pressure (in PSI I think?) # TODO: check units
 _fmin = 0 # minimum force (not really used as of now)
-_fmax = 60 # maximum force - used for normalizations
+_fmax = 150 # maximum force - used for normalizations
 
 
 ##############################
