@@ -21,7 +21,6 @@ import jax.numpy as jnp
 import imageio
 
 from jax import random
-from utils import MLP, RPNEnsemble, RingEncoding, ActuatorModel, Operator
 from flax import linen as nn
 
 
@@ -403,26 +402,6 @@ def add_to_data(input_df, Directory_path, old_df_name):
     running_df = running_df._append(input_df)
     running_df.to_pickle(old_df_name)
     return
-
-"""
-Load a model with standardized parameters and data (relevant as of 9/2/24)
-return: The ensemble used in model creation
-NOTE 9/19/24 - this function may already be deprecated. Hyperparameters are changing quickly.
-"""
-def load_std_ensemble():
-    # define model
-    # this must use the same hyperparameters as the architecure checkpointed
-    # ring encoding was initially 4, [12,5] - lately we've used 12, [16,5]. Note there may also be a problem with whether or not ONE-HOT is used.
-    ring_encoder = RingEncoding(12,
-                                MLP([16,5]),
-                                na_embeding_init = lambda key, shape, dtype=float : random.uniform(key, shape=shape, dtype=dtype, minval=-jnp.sqrt(3), maxval=jnp.sqrt(3)),
-                                )
-    arch = ActuatorModel(ring_encoder,
-                        MLP([24,16], output_activation=nn.gelu),
-                        polynomial_degree=2)
-    ensemble_size = 42 # try reducing this value if you run into 'RESOURCE_EXHAUSTED' errors. This should probably not be lower than 32ish
-    ensemble = RPNEnsemble(arch, ensemble_size)
-    return ensemble
 
 
 """
