@@ -184,9 +184,9 @@ def get_height_max_posterior_fn(model, num_rings, target_Fs, target_Ps,
         pressure_error = pressure_error.mean() # scalar
         scale = jnp.log(len(height_factor)) # scalar for scaling logsumexp (a smooth way of computing minimum)
         # scale = hmax/15 # scalar for scaling logsumexp (a smooth way of computing minimum) - GMC 2/15
-        # height_factor = -nn.activation.logsumexp(-height_factor*scale)/scale # scalar
+        height_factor = -nn.activation.logsumexp(-height_factor*scale)/scale # scalar
         # to use mean instead of worst height, comment two lines above, and uncomment the one below
-        height_factor = height_factor.mean() # scalar
+        # height_factor = height_factor.mean() # scalar
 
 
         if return_predictions_only:
