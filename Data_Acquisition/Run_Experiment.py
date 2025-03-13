@@ -22,9 +22,9 @@ Material = 'E0030'
 Thickness = '3.0t'
 Radius = '70r'
 Contact = '25.4cap'
-Date = '25_01_07'# yr_m_day
+Date = '25_03_04'# yr_m_day
 Sample = 'A' # A/B depends on casting location
-Trial = '3.1'
+Trial = '1.0'
 Rings = '33_5_61.5_5'
 
 Sample_String = Material + '_' + Thickness + '_' + Radius + '_' + Contact + '_' + Date + '_' + Sample + '_' + Trial + '_' + Rings
@@ -32,9 +32,10 @@ Sample_String = Material + '_' + Thickness + '_' + Radius + '_' + Contact + '_' 
 print(Sample_String)
 
 # Tests per height
-Num_Tests = 3
+Num_Tests = 1
 # Height list
-Test_Heights = [0,10,20,30,40,50,60,70] #mm
+# Test_Heights = [0,10,20,30,40,50,60,70] #mm
+Test_Heights = [10,20]
 New_Heights = []
 
 # Record values in .csv for duration of deflation (false = just inflation)
@@ -197,8 +198,10 @@ print("Testing Completed.")
 
 #ADD IMPORTANT CODE HERE
 
+os.chdir(os.path.join(parent_dir,Sample_String))
+
 # Combined all data into a single .pkl file
-df = folder_to_df(parent_dir, Sample_String, Trim_Data=True)
+df = folder_to_df(parent_dir, Sample_String, Trim_Data=False)
 # Save data to .pkl
 df.to_pickle(Sample_String+'_data.pkl')
 
