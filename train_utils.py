@@ -143,13 +143,14 @@ class Operator:
 
         plt.show()
 
-    def plot_predictions(self, batch, return_predictions=False):
+    def plot_predictions(self, batch, return_predictions=False, use_uq=False):
         # Create reconstructions
         if self.has_weights:
             (u, y), s_true, weights = batch
         else:
             (u, y), s_true = batch
-        s_pred = self.apply(self.params, u, y).mean(0)
+        s_pred_uq = self.apply(self.params, u, y)
+        s_pred = s_pred_uq.mean(0)
 
         #error_fn = lambda target, output: jnp.linalg.norm(target-output,2)/jnp.linalg.norm(target,2)
         #error = vmap(error_fn, in_axes=(0,0))(s_true, s_pred)
@@ -178,7 +179,10 @@ class Operator:
         plt.show()
 
         if return_predictions:
-           return s_pred
+            if use_uq:
+                return s_pred_uq
+            else:
+                return s_pred
 
 
 

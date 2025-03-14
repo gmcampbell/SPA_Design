@@ -155,7 +155,7 @@ class MonotonicActuator(nn.Module):
     latent_encoder : nn.Module
     polynomial_degree : int=2 # change this to increase/decrease the degree of polynomial approximation in p
     max_num_rings : int=2
-    output_activation : Callable=lambda x : nn.leaky_relu(x,negative_slope=0.5)
+    output_activation : Callable=nn.relu # set to nn.relu to enforce exact force > 0
 
 
     @nn.compact
@@ -177,22 +177,15 @@ class MonotonicActuator(nn.Module):
         u_new = jnp.hstack((v, h[:,None], t[:,None], w0[:,None]))
         u_new = jnp.hstack((u_new, (u_new.shape[-1]/2)*num_rings))
         latent = self.latent_encoder(u_new)
-        coefs = nn.Dense(self.polynomial_degree+2)(latent) # (batch_size, polynomial_degree+2)
+        coefs = nn.Dense(self.polynomial_degree+1)(latent) # (batch_size, polynomial_degree+2)
         # extract coefficients for polynomial (all positive to enforce monotonicity, except for constant term)
         constant_term = coefs[...,:1] # (batch_size, 1)
-        poly_coefs = nn.leaky_relu(coefs[...,1:-1]) # (batch_size, polynomial_degree)
-        # extract coeficient for log scaling
-        log_coef = 0.001*nn.softplus(coefs[...,-1:]) # (batch_size, 1)
+        poly_coefs = nn.leaky_relu(coefs[...,1:]) # (batch_size, polynomial_degree)
 
-        # use coeficients to compute force as: F = (1/a)*log(a*ReLu(poly(p)) + 1)
-        # where a = log_coef, and poly is the polynomial computed by the network
+
         basis = ((y/1_000)**(1+jnp.arange(self.polynomial_degree))) # (batch_size, polynomial_degree)
-        #basis = (y**(1+jnp.arange(self.polynomial_degree))) # (batch_size, polynomial_degree)
         fs = jnp.sum(poly_coefs * basis, axis=-1, keepdims=True) # (batch_size, 1)
         fs = fs + constant_term # (batch_size, 1)
-        fs = nn.relu(fs) # ensure forces are non-negative
-        #fs = 2*jnp.log(log_coef*fs + 1)/log_coef
-        #fs = 2*jnp.log1p(log_coef*fs)/log_coef
         return self.output_activation(fs) # (batch_size, 1)
     
 
