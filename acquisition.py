@@ -54,16 +54,6 @@ class MCAcquisition:
             reparam = jnp.sqrt(0.5*jnp.pi) * uncertainty # shape (q, num_samples, m)
             US = jnp.mean(jnp.max(reparam, axis=0)) # scalar
             return -US
-        elif self.acq_fn == 'GEE': # stands for Gaussian Empirical Entropy, a novel experimental acquisition function
-            samples = self.posterior(x) # shape (q,num_samples,m)
-            weights = self.weights(x).reshape(q,1)
-            Ns = samples.shape[1] # ensamble size
-            dists = self.norm(samples.reshape((q,1,Ns,-1)) - samples.reshape((q,Ns,1,-1)))  # shape (q,Ns,N_s)?
-            #entropy = -logsumexp(dists/(-4*self.sig), axis=1) # shape (q,N_s) # old version
-            entropy = -logsumexp(-(dists/(2 * self.sig))**2, axis=1, b=jnp.ones_like(dists)/Ns) # shape (q,N_s)
-            reparam = weights * entropy
-            US = jnp.mean(jnp.max(reparam, axis=0)) # Make sure taking max here makes sense for BALD
-            return -US
         elif self.acq_fn == 'EM': # naive Expectation Maximization
             samples = self.posterior(x) # shape (q,num_samples,m,1)
             return -samples.mean()
