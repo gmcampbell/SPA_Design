@@ -143,7 +143,7 @@ class Operator:
 
         plt.show()
 
-    def plot_predictions(self, batch, return_predictions=False, use_uq=False):
+    def plot_predictions(self, batch, return_predictions=False, use_uq=False, return_RMSE = False):
         # Create reconstructions
         if self.has_weights:
             (u, y), s_true, weights = batch
@@ -152,8 +152,9 @@ class Operator:
         s_pred_uq = self.apply(self.params, u, y)
         s_pred = s_pred_uq.mean(0)
 
-        #error_fn = lambda target, output: jnp.linalg.norm(target-output,2)/jnp.linalg.norm(target,2)
-        #error = vmap(error_fn, in_axes=(0,0))(s_true, s_pred)
+        error_fn = lambda target, output: jnp.linalg.norm(target-output,2)/jnp.linalg.norm(target,2)
+        error = vmap(error_fn, in_axes=(0,0))(s_true, s_pred)
+        RMSE = jnp.sqrt(jnp.mean(error**2))
         #print('Relative L2 error: {:.2e}'.format(jnp.mean(error)))
 
         plt.figure(figsize=(16, 4))
@@ -183,6 +184,9 @@ class Operator:
                 return s_pred_uq
             else:
                 return s_pred
+
+        if return_RMSE:
+            return RMSE
 
 
 
