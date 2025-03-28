@@ -505,19 +505,15 @@ def mem_to_input(mem):
     return h, change_material, material_type
 
 
-
-# Leo's ring generation: ~~~~~~~~~~~~~~~~~~~~~~~
-# computes radii and widths of rings
+"""
+# Various functions for ring generation: ~~~~~~~~~~~~~~~~~~~~~~~
+# normalizes radii and widths of rings"
+"""
 
 # Parameters for material
 _radius = 70. # radius of the entire membrane
 _min_spacing = 3. # minimum spacing between rings and other rings/boundaries
 _min_width = 5. # minimum width of each ring
-
-_tmin = 1. # minimum membrane thickness
-_tmax = 3. # maximum membrane thickness
-_contactmin = 25.4 # minimum contact disk radius
-_contactmax = 38.1  # maximum contact disk radius
 
 # effectively, this function transforms numbers between 0 and 1 into the proper ring parameters
 def get_rw(w0, ring_params, num_rings, radius=_radius, min_spacing=_min_spacing, min_width=_min_width, max_rings=2):

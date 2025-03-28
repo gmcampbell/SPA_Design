@@ -52,9 +52,9 @@ LAPTOP_CAM = False # True if using laptop webcam, False if using external webcam
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This section sets output path (and) - update for individual PC.
 if User == 'Jason':
-    parent_dir = 'C:\\Users\\jason\\Desktop\\ModLab\\Serial_Experiment_Control\\data'
+    parent_dir = '...'
 if User == 'Greg':
-    parent_dir = 'C:\\Users\\campb\\Python_Code\\data'
+    parent_dir = '...'
 os.chdir(parent_dir)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -68,10 +68,6 @@ def print_recommendations(u_new):
             print(f'Ring {i+1}) radius: {u_new[j][i*2 + 2] : .2f}; width: {u_new[j][i*2 + 3] : .2f}')
 
 
-
-
-
-
 ##################################################
 ###### Posterior Functions For Optimization ######
 ##################################################
@@ -182,8 +178,8 @@ def get_height_max_posterior_fn(model, num_rings, target_Fs, target_Ps,
         # summarize into single values
         force_error = force_error.mean() # scalar
         pressure_error = pressure_error.mean() # scalar
-        scale = jnp.log(len(height_factor)) # scalar for scaling logsumexp (a smooth way of computing minimum)
-        # scale = hmax/15 # scalar for scaling logsumexp (a smooth way of computing minimum) - GMC 2/15
+        # scale = jnp.log(len(height_factor)) # scalar for scaling logsumexp (a smooth way of computing minimum)
+        scale = hmax/15 # scalar for scaling logsumexp (a smooth way of computing minimum) - GMC 2/15
         height_factor = -nn.activation.logsumexp(-height_factor*scale)/scale # scalar
         # to use mean instead of worst height, comment two lines above, and uncomment the one below
         # height_factor = height_factor.mean() # scalar

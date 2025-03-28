@@ -34,8 +34,8 @@ print(Sample_String)
 # Tests per height
 Num_Tests = 1
 # Height list
-# Test_Heights = [0,10,20,30,40,50,60,70] #mm
-Test_Heights = [10,20]
+Test_Heights = [0,10,20,30,40,50,60,70] #mm
+# Heights to test at higher pressure
 New_Heights = []
 
 # Record values in .csv for duration of deflation (false = just inflation)
@@ -53,11 +53,11 @@ User = 'Greg' # 'Greg' or 'Jason'
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This section sets output path (and) - update for individual PC.
 if User == 'Jason':
-    parent_dir = 'C:\\Users\\jason\\Desktop\\ModLab\\Serial_Experiment_Control\\data'
+    parent_dir = '...'
 if User == 'Greg':
-    parent_dir = 'C:\\Users\\campb\\Python_Code\\data'
+    parent_dir = '...'
 os.chdir(parent_dir)
-Complete_Data = '8_28_2024_data_subset.pkl' # If compiling to a complete data set
+Complete_Data = '...' # If compiling to a complete data set
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This section defines global variables
 if User == 'Jason':
@@ -165,7 +165,7 @@ for height in Test_Heights:
 New_Heights.reverse()
 print(f"Testing these heights again with a higher burst pressure: {New_Heights}")
 
-# Secondary Loop:
+# Secondary Loop (for higher-pressure lifts):
 for height in New_Heights:
     set_height(height,serial_port,baud_rate,up_rate,down_rate,max_recordable_height)
     print(f"Setting height to {height} mm")
@@ -195,8 +195,6 @@ for height in New_Heights:
 cap.release()
 
 print("Testing Completed.")
-
-#ADD IMPORTANT CODE HERE
 
 os.chdir(os.path.join(parent_dir,Sample_String))
 

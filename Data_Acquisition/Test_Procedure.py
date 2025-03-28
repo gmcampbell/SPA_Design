@@ -108,12 +108,15 @@ def time_eqn(height, max_record_time=150):
     return min(experiment_time,max_record_time)
 
 """
-Main function to run an experiment (inflate and deflate at a specific height, write data to a .csv)
+Main function to run characterization experiment (inflate and deflate at a specific height, write data to a .csv)
 param height_number: The height of the test rig in mm.
 param test_number: The number of the current trial (generally 0-2)
 param data_path: The path to the directory where data should be saved (os.path.join(parent_dir, sample_string))
+param serial_port: The serial port to which the test rig controller is connected.
+param baud_rate: The baud rate for serial communications.
 param Burst_Pressure: The pressure at which the test rig should stop inflating (PSI), see initial test set for material values
 param MEASURE_DEFLATION: Whether or not to measure deflation (True/False)
+param Next_Heights: List of highs to re-test at higher pressure
 """
 def run_experiment(height_number,test_number,data_path,serial_port,baud_rate=115200,Burst_Pressure=0.5,MEASURE_DEFLATION=True,Next_Heights=[]):
     serialString = ""  # Used to hold data coming over UART
@@ -240,6 +243,17 @@ def run_experiment(height_number,test_number,data_path,serial_port,baud_rate=115
         
     # Note - the following only works if you strap pin 15 of ESP32 to GND (supressing init message).
     clean_csv(file_name)
+
+"""
+Main function to run mass test experiment (inflate and deflate while lifting a given mass, write data to a .csv)
+param test_number: The number of the current trial (generally 0-2)
+param data_path: The path to the directory where data should be saved (os.path.join(parent_dir, sample_string))
+param serial_port: The serial port to which the test rig controller is connected.
+param baud_rate: The baud rate for serial communications.
+param MEASURE_DEFLATION: Whether or not to measure deflation (True/False)
+param mass: mass [kg] being lifted
+
+"""
 
 def run_mass_experiment(test_number,data_path,serial_port,baud_rate=115200,MEASURE_DEFLATION=True,mass=''):
     serialString = ""  # Used to hold data coming over UART
