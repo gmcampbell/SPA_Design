@@ -154,7 +154,6 @@ class Operator:
 
         error_fn = lambda target, output: jnp.linalg.norm(target-output,2)/jnp.linalg.norm(target,2)
         error = vmap(error_fn, in_axes=(0,0))(s_true, s_pred)
-        RMSE = jnp.sqrt(jnp.mean(error**2))
         #print('Relative L2 error: {:.2e}'.format(jnp.mean(error)))
 
         plt.figure(figsize=(16, 4))
@@ -175,6 +174,7 @@ class Operator:
         # plotting histogram of errors
         plt.subplot(133)
         error = s_pred-s_true
+        RMSE = jnp.sqrt(jnp.mean(error**2))
         plt.hist(error.flatten(), bins=50)
         plt.title(f'Histogram of errors (RMSE is {jnp.sqrt((error**2).mean()):.2f})\n(median absolute error is {jnp.median(abs(error)):.2f})')
         plt.show()
