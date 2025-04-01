@@ -49,10 +49,10 @@ def get_rw(w0, ring_params, num_rings, radius=_radius, min_spacing=_min_spacing,
     return jnp.ravel(jnp.vstack([radii, widths]), order='F')
 
 # 'optimization variables to physical variables'
-def opt_var_to_phys_var(membrane_coefs, num_rings, max_rings=2):
+def opt_var_to_phys_var(membrane_coefs, num_rings, max_rings=2, radius=_radius, min_spacing=_min_spacing, min_width=_min_width):
     material_params = membrane_coefs[:2]
     ring_params = jnp.concatenate([membrane_coefs[2:], jnp.array(2*(max_rings-num_rings)*[jnp.nan])])
-    ring_params = get_rw(material_params[1], ring_params, num_rings)
+    ring_params = get_rw(material_params[1], ring_params, num_rings, radius=radius, min_spacing=min_spacing, min_width=min_width, max_rings=max_rings)
 
     membrane = jnp.concatenate([material_params, ring_params])
     return membrane
