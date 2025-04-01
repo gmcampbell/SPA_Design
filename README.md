@@ -35,6 +35,8 @@ membrane_optimization.ipynb - solving for height-maximization membranes
 
 model-baseline_compare - using scikit-learn for k-fold cross-validation to baseline our NN model results. Solving ringless-only NN model error with k-fold cross-validation.
 
+select_next_experiment.ipynb - using model uncertainty to inform choice of next experiments (active learning).
+
 train-utils.py - NN model class and data-loader
 
 **Data Acquisition**: 
