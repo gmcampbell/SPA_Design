@@ -2,6 +2,18 @@
 
 This GitHub repository is presented as supplementary material to the paper **Active Learning Design: Modeling Force Output for Axisymmetric Soft Pneumatic Actuators**, authored by Gregory M. Campbell, Gentian Muhaxheri, Leonardo Ferreira Guilhoto, Christian D. Santangelo, Paris Perdikaris, James Pikul, and Mark Yim.
 
+The pre-print is currently available on arXiv at: https://arxiv.org/abs/2504.01156. If you would like to cite this work, please use the reference below (in BibTeX):
+
+    @misc{campbell2025activelearningdesignmodeling,
+      title={Active Learning Design: Modeling Force Output for Axisymmetric Soft Pneumatic Actuators}, 
+      author={Gregory M. Campbell and Gentian Muhaxheri and Leonardo Ferreira Guilhoto and Christian D. Santangelo and Paris Perdikaris and James Pikul and Mark Yim},
+      year={2025},
+      eprint={2504.01156},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2504.01156}, 
+    }
+
 ## **Description of the file structure**:
 
 * Root files include .pkl files of characterization (model_data_dictionary) and test dataset (mass_lift_data_dictionary). It also includes general calculations and figures used in the paper.
